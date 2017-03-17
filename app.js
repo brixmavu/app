@@ -6,11 +6,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose'); // DB 
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 var app = express();
+
+// custommiddleware
+
+//logging
 
 mongoose.connect('mongodb://localhost/myapp');
 
@@ -30,16 +33,25 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  secret: 'Safety Ninja',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { },
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection
+  })
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', require('./routes/index'));
+app.use('/users', require('./routes/users'));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
