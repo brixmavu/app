@@ -16,6 +16,7 @@
     "hbs": "~4.0.0",
     "mongoose": "^4.9.0",
     "morgan": "~1.7.0",
+    "rotating-file-stream": "^1.1.9",
     "serve-favicon": "~2.3.0"
   }
 }

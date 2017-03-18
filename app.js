@@ -1,5 +1,7 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
+var fs = require('fs');
+var rfs = require('rotating-file-stream');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -15,6 +17,14 @@ var app = express();
 var requireLogin = require('./middleware/require_login');
 
 //logging
+var logDirectory = path.join(__dirname, 'logs');
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+
+var accessLogStream = rfs('access.log', {
+  interval: '2d',
+  path: logDirectory
+});
+
 
 mongoose.connect('mongodb://localhost/myapp');
 

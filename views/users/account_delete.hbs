@@ -1,0 +1,32 @@
+<div id="container">
+<h2>Are you sure you want to delete?</h2>
+<div class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title"><strong>{{title}} </strong></h3>
+        </div>
+        <div class="panel-body">
+            <form role="form" method="post" action="/users/delete">
+            <input type="hidden" name="confirm" value="1 ">
+            <div class="radio">
+                <label><input type="radio" name="softDelete" value="1" checked="checked">
+                    Yes, Temporaly Deactivate
+                </label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="softDelete" value="0">
+                    Yes, Permanetly Delete
+                </label>
+            </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <a href="#" type="submit" class="btn btn-success"> No, go back</a>
+                        <button type="submit" class="btn btn-sm btn-info">Delete</button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+</div>
