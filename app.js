@@ -12,6 +12,7 @@ var MongoStore = require('connect-mongo')(session);
 var app = express();
 
 // custommiddleware
+var requireLogin = require('./middleware/require_login');
 
 //logging
 

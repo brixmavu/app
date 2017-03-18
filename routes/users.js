@@ -81,4 +81,54 @@ router.get('/password_reset', function (req, res) {
   console.log(req);
 })
 
+router.get('/delete', function (req, res) {
+   if (req.param('confirm') == 1) {
+     var id = req.session._id;
+
+     if (req.param('softDelete') == 1) {
+       //Soft delete
+       User.update({_id: id}, { $set: { deleted_at: Date }}, function (err) {  
+         if (err) {
+           // @TODO: flash message
+           res.redirect('/users/delete');
+         }
+       });
+     } else{
+       //Hard delete
+       User.find({ _id: id}).remove(function (err) {  
+          if (err) {
+            // @TODO: flash message
+            res.redirect('/users/delete');
+          }
+       });
+     }
+     //success
+     // @TODO: flash message
+     req.session.destroy();
+     res.redirect('/');
+   }
+  });
+
+  router.get('/reactivate', function (req, res) {  
+    res.render('users/account_reactivate');
+  })
+  .post(function (req, res) {  
+    var email = req.param('email');
+
+    User.find({ email: email}, function (err) {  
+      if (err) {
+        //@TODO: flash message
+        res.redirect('/reactivate');
+      }
+    });
+
+    // @TODO: send email to user with /reactivate/<code_here>
+  });
+
+  router.get('/reactivate/:code', function (req, res) { 
+    var code = req.param('code');
+    //var code = req.query('code);
+   });
+
+
 module.exports = router;
