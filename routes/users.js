@@ -35,10 +35,14 @@ router.get('/logout', function (req, res) {
 
 router.get('/register', function (req, res) {  
   res.render('users/register', {
-    title: 'Register'
+    title: 'Register' , success: false, errors: req.session.errors
   });
+  req.session.errors = null;
 })
 .post(function (req, res) {
+  //validation
+//req.check('password', 'password is invalid').isLength({min: 6}).equals(req.param)
+
   var email = req.param('email');
   var password = req.param('password');  
   var passwordConfirm = req.param('passwordConfirm');
